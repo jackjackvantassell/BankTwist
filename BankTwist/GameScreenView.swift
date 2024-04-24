@@ -42,7 +42,6 @@ struct GameScreenView: View {
         // Remove the player from the list of active players
         players.remove(player)
     }
-
     
     var body: some View {
         NavigationView {
@@ -80,8 +79,6 @@ struct GameScreenView: View {
                             }
                         }
                     }
-
-
                     
                     VStack {
                         Spacer().frame(height: 75)
@@ -155,6 +152,9 @@ struct GameScreenView: View {
                                 Text("Doubles!")
                             }
                             .buttonStyle(CustomButtonStyle())
+                            .disabled(diceRoll < 4)
+                            .background(diceRoll < 4 ? Color.gray : Color.clear)
+                            .strikethrough(diceRoll < 4)
                         }
                     }
                     // Changes pages
