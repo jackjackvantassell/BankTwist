@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct GameScreenView: View {
-    
     @EnvironmentObject private var round: Round
     @EnvironmentObject private var players: NameList
     @State private var currentRound = 1
@@ -9,9 +8,19 @@ struct GameScreenView: View {
     @State private var diceRoll = 1
     @State private var isWinScreenActive = false
     @State private var playersWhoBanked: [String] = []
-    
-    // Dictionary to store player scores, where key is player name and value is player score
     @State private var playerScores: [String: Int] = [:]
+    @State private var actionStack: [() -> Void] = []
+    
+    // Function to push an action to the stack
+    private func pushAction(_ action: @escaping () -> Void) {
+        actionStack.append(action)
+    }
+    
+    // Function to pop and execute the most recent action from the stack
+    private func undoLastAction() {
+        guard let lastAction = actionStack.popLast() else { return }
+        lastAction()
+    }
     
     var highestScoringPlayers: [String] {
         playerScores.sorted(by: { $0.value > $1.value }).map { $0.key }
@@ -42,26 +51,43 @@ struct GameScreenView: View {
         // Remove the player from the list of active players
         players.remove(player)
     }
-
     
     var body: some View {
         NavigationView {
             ZStack {
-                // Background color
-                LinearGradient(gradient: Gradient(colors: [Color(red: 29.0/255, green: 90.0/255.0, blue: 137.0/255.0), Color.white]), startPoint: .top, endPoint: .bottom)
+                Color(red: 29.0/255.0, green: 90.0/255.0, blue: 137.0/255.0)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     HStack {
+                    // Renders what round the game is on
                         Text("Round: \(currentRound) out of \(round.roundCounter)")
                             .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+                        
+                        Spacer().frame(width: 25)
+                        
+                        // Renders the back button
+                        Button(action: {
+                            undoLastAction()
+                        }) {
+                            Label("Undo last action", systemImage: "arrow.backward.circle")
+                        }
+                        .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
                     }
                     
                     Spacer().frame(height: 50)
                     
+                    //Renders the diceRoll
+                    Text("Dice roll: \(diceRoll)")
+                            .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+                    
+                    Spacer().frame(height: 50)
+                    
+                    // Renders the game score
                     Text("\(gameScore)").font(.system(size: 75))
                         .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
                     
-                    Spacer().frame(height: 100)
+                    
+                    Spacer().frame(height: 50)
                     
                     // Renders people playing
                     ForEach(highestScoringPlayers, id: \.self) { name in
@@ -77,11 +103,10 @@ struct GameScreenView: View {
                                     Text("BANK!")
                                         .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
                                 }
+                                .padding(2.5)
                             }
                         }
                     }
-
-
                     
                     VStack {
                         Spacer().frame(height: 75)
@@ -92,6 +117,10 @@ struct GameScreenView: View {
                                 Button(action: {
                                     gameScore += i
                                     diceRoll += 1
+                                    pushAction {
+                                        gameScore -= i
+                                        diceRoll -= 1
+                                    }
                                 }) {
                                     Text("\(i)")
                                 }
@@ -103,21 +132,38 @@ struct GameScreenView: View {
                             Button(action: {
                                 gameScore += 6
                                 diceRoll += 1
+                                pushAction {
+                                    gameScore -= 6
+                                    diceRoll -= 1
+                                }
                             }) {
                                 Text("6")
                             }
                             .buttonStyle(CustomButtonStyle())
+                            
                             Button(action: {
                                 if diceRoll < 4 {
                                     gameScore += 70
+                                    
+                                    pushAction {
+                                        gameScore -= 70
+                                        diceRoll -= 1
+                                    }
                                 } else {
+                                    let previousGameScore = gameScore
+                                    let previousDiceRoll = diceRoll
+                                    
+                                    pushAction {
+                                        gameScore = previousGameScore
+                                        diceRoll = previousDiceRoll
+                                    }
+                                    
                                     gameScore = 0
                                     diceRoll = 0
                                 }
                                 
                                 resetRound()
                                 diceRoll += 1
-                                print("\(diceRoll)")
                             }) {
                                 Text("7")
                             }
@@ -125,11 +171,16 @@ struct GameScreenView: View {
                             .background(diceRoll < 4 ? Color.green : Color.red)
                             .foregroundColor(Color(red: 29.0/255.0, green: 90.0/255.0, blue: 137.0/255.0))
                             .cornerRadius(10)
+                            
                             HStack {
                                 ForEach(8..<10) { i in
                                     Button(action: {
                                         gameScore += i
                                         diceRoll += 1
+                                    pushAction {
+                                        gameScore -= i
+                                        diceRoll -= 1
+                                    }
                                     }) {
                                         Text("\(i)")
                                     }
@@ -137,11 +188,16 @@ struct GameScreenView: View {
                                 }
                             }
                         }
+                        
                         HStack {
                             ForEach(11..<13) { i in
                                 Button(action: {
                                     gameScore += i
                                     diceRoll += 1
+                                    pushAction {
+                                        gameScore -= i
+                                        diceRoll -= 1
+                                    }
                                 }) {
                                     Text("\(i)")
                                 }
@@ -151,17 +207,23 @@ struct GameScreenView: View {
                             Button(action: {
                                 gameScore = gameScore + gameScore
                                 diceRoll += 1
+                                    pushAction {
+                                        gameScore /= 2
+                                        diceRoll -= 1
+                                    }
                             }) {
                                 Text("Doubles!")
                             }
                             .buttonStyle(CustomButtonStyle())
+                            .disabled(diceRoll < 4)
+                            .strikethrough(diceRoll < 4)
                         }
                     }
                     // Changes pages
                     .navigationBarHidden(true)
                     .background(
                         NavigationLink(destination: NavigationView {
-                            WinScreen(highestScoringPlayer: highestScoringPlayers.first ?? "")
+                            WinScreen(highestScoringPlayer: highestScoringPlayers.first ?? "", allPlayers: players.names) // Pass array of all players
                         }.navigationBarHidden(true),
                                        isActive: $isWinScreenActive) {
                                            EmptyView()
