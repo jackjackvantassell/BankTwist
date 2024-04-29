@@ -216,6 +216,7 @@ struct GameScreenView: View {
                             }
                             .buttonStyle(CustomButtonStyle())
                             .disabled(diceRoll < 4)
+                            .background(diceRoll < 4 ? Color.gray : Color.clear)
                             .strikethrough(diceRoll < 4)
                         }
                     }
