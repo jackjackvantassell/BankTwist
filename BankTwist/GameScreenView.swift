@@ -9,6 +9,7 @@ struct GameScreenView: View {
     @State private var isWinScreenActive = false
     @State private var playersWhoBanked: [String] = []
     @State private var playerScores: [String: Int] = [:]
+    // [() -> Void] makes a stack.
     @State private var actionStack: [() -> Void] = []
     
     // Function to push an action to the stack
@@ -50,6 +51,12 @@ struct GameScreenView: View {
         
         // Remove the player from the list of active players
         players.remove(player)
+        
+        pushAction {
+            playerScores[player] = playerScore // Revert the player's score
+            players.add(player) // Add the player back to the list of active players
+            playersWhoBanked.removeAll(where: { $0 == player }) // Remove the player from the list of banked players
+        }
     }
     
     var body: some View {
@@ -69,15 +76,17 @@ struct GameScreenView: View {
                         Button(action: {
                             undoLastAction()
                         }) {
-                            Label("Undo last action", systemImage: "arrow.backward.circle")
+                            Label("Undo", systemImage: "arrow.backward.circle")
+//                            Image(systemName: "arrow.backward.circle")
                         }
                         .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+//                        .buttonStyle(CustomButtonStyle())
                     }
                     
                     Spacer().frame(height: 50)
                     
-                    //Renders the diceRoll
-                    Text("Dice roll: \(diceRoll)")
+                    // Renders the diceRoll
+                    Text("Dice roll: \(diceRoll - 1)")
                             .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
                     
                     Spacer().frame(height: 50)
