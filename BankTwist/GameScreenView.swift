@@ -66,7 +66,7 @@ struct GameScreenView: View {
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     HStack {
-                    // Renders what round the game is on
+                        // Renders what round the game is on
                         Text("Round: \(currentRound) out of \(round.roundCounter)")
                             .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
                         
@@ -77,17 +77,17 @@ struct GameScreenView: View {
                             undoLastAction()
                         }) {
                             Label("Undo", systemImage: "arrow.backward.circle")
-//                            Image(systemName: "arrow.backward.circle")
+                            //                            Image(systemName: "arrow.backward.circle")
                         }
                         .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
-//                        .buttonStyle(CustomButtonStyle())
+                        //                        .buttonStyle(CustomButtonStyle())
                     }
                     
                     Spacer().frame(height: 50)
                     
                     // Renders the diceRoll
                     Text("Dice roll: \(diceRoll - 1)")
-                            .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+                        .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
                     
                     Spacer().frame(height: 50)
                     
@@ -99,20 +99,25 @@ struct GameScreenView: View {
                     Spacer().frame(height: 50)
                     
                     // Renders people playing
-                    ForEach(highestScoringPlayers, id: \.self) { name in
-                        HStack {
-                            Text("\(name): \(playerScores[name] ?? 0)")
-                                .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
-                            
-                            // Check if the player is in the list of players who haven't banked
-                            if !playersWhoBanked.contains(name) {
-                                Button(action: {
-                                    bankScore(for: name)
-                                }) {
-                                    Text("BANK!")
-                                        .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+                    ScrollView(.horizontal ) {
+                        HStack(spacing: 20) {
+                            ForEach(highestScoringPlayers, id: \.self) { name in
+                                Text("\(name): \(playerScores[name] ?? 0)")
+                                    .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+                                
+                                // Check if the player is in the list of players who haven't banked
+                                if !playersWhoBanked.contains(name) {
+                                    Button(action: {
+                                        bankScore(for: name)
+                                    }) {
+                                        Text("BANK!")
+                                        //                                            .foregroundStyle(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+                                            .background(Color(red: 252.0/255.0, green: 194.0/255.0, blue: 0))
+                                            .foregroundColor(Color(red: 29.0/255.0, green: 90.0/255.0, blue: 137.0/255.0))
+                                            .padding(2.5)
+                                            .cornerRadius(25)
+                                    }
                                 }
-                                .padding(2.5)
                             }
                         }
                     }
@@ -165,6 +170,7 @@ struct GameScreenView: View {
                                     pushAction {
                                         gameScore = previousGameScore
                                         diceRoll = previousDiceRoll
+                                        currentRound -= 1
                                     }
                                     
                                     gameScore = 0
@@ -186,10 +192,10 @@ struct GameScreenView: View {
                                     Button(action: {
                                         gameScore += i
                                         diceRoll += 1
-                                    pushAction {
-                                        gameScore -= i
-                                        diceRoll -= 1
-                                    }
+                                        pushAction {
+                                            gameScore -= i
+                                            diceRoll -= 1
+                                        }
                                     }) {
                                         Text("\(i)")
                                     }
@@ -216,16 +222,15 @@ struct GameScreenView: View {
                             Button(action: {
                                 gameScore = gameScore + gameScore
                                 diceRoll += 1
-                                    pushAction {
-                                        gameScore /= 2
-                                        diceRoll -= 1
-                                    }
+                                pushAction {
+                                    gameScore /= 2
+                                    diceRoll -= 1
+                                }
                             }) {
                                 Text("Doubles!")
                             }
                             .buttonStyle(CustomButtonStyle())
                             .disabled(diceRoll < 4)
-                            .background(diceRoll < 4 ? Color.gray : Color.clear)
                             .strikethrough(diceRoll < 4)
                         }
                     }

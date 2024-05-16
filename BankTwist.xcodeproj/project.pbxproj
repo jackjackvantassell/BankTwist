@@ -12,7 +12,7 @@
 		045C5DCB2B686D9200FBB46E /* AddPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C5DCA2B686D9200FBB46E /* AddPlayerView.swift */; };
 		045C5DCD2B6B1F7400FBB46E /* GameScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C5DCC2B6B1F7400FBB46E /* GameScreenView.swift */; };
 		04D86A2A2B6321E8005F0B4D /* BankTwistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D86A292B6321E8005F0B4D /* BankTwistApp.swift */; };
-		04D86A2C2B6321E8005F0B4D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D86A2B2B6321E8005F0B4D /* ContentView.swift */; };
+		04D86A2C2B6321E8005F0B4D /* StartingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D86A2B2B6321E8005F0B4D /* StartingView.swift */; };
 		04D86A2E2B6321EA005F0B4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04D86A2D2B6321EA005F0B4D /* Assets.xcassets */; };
 		04D86A322B6321EA005F0B4D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04D86A312B6321EA005F0B4D /* Preview Assets.xcassets */; };
 		04D86A3C2B6321EB005F0B4D /* BankTwistTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D86A3B2B6321EB005F0B4D /* BankTwistTests.swift */; };
@@ -45,7 +45,7 @@
 		045C5DCC2B6B1F7400FBB46E /* GameScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreenView.swift; sourceTree = "<group>"; };
 		04D86A262B6321E8005F0B4D /* BankTwist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BankTwist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04D86A292B6321E8005F0B4D /* BankTwistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankTwistApp.swift; sourceTree = "<group>"; };
-		04D86A2B2B6321E8005F0B4D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		04D86A2B2B6321E8005F0B4D /* StartingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartingView.swift; sourceTree = "<group>"; };
 		04D86A2D2B6321EA005F0B4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04D86A2F2B6321EA005F0B4D /* BankTwist.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BankTwist.entitlements; sourceTree = "<group>"; };
 		04D86A312B6321EA005F0B4D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 				045C5DCA2B686D9200FBB46E /* AddPlayerView.swift */,
 				044F6B5C2BACEDA300BFFD46 /* ButtonStyle.swift */,
 				04D86A292B6321E8005F0B4D /* BankTwistApp.swift */,
-				04D86A2B2B6321E8005F0B4D /* ContentView.swift */,
+				04D86A2B2B6321E8005F0B4D /* StartingView.swift */,
 				04D86A2D2B6321EA005F0B4D /* Assets.xcassets */,
 				04D86A2F2B6321EA005F0B4D /* BankTwist.entitlements */,
 				04D86A302B6321EA005F0B4D /* Preview Content */,
@@ -282,7 +282,7 @@
 				045C5DCD2B6B1F7400FBB46E /* GameScreenView.swift in Sources */,
 				044F6B5B2B7D66D300BFFD46 /* WinScreen.swift in Sources */,
 				044F6B5D2BACEDA300BFFD46 /* ButtonStyle.swift in Sources */,
-				04D86A2C2B6321E8005F0B4D /* ContentView.swift in Sources */,
+				04D86A2C2B6321E8005F0B4D /* StartingView.swift in Sources */,
 				04D86A2A2B6321E8005F0B4D /* BankTwistApp.swift in Sources */,
 				045C5DCB2B686D9200FBB46E /* AddPlayerView.swift in Sources */,
 			);

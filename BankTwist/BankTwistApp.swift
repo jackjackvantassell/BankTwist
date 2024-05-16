@@ -30,7 +30,7 @@ struct BankTwistApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StartingView()
                 .environmentObject(round)
                 .environmentObject(NameList()) // Inject NameList here
         }
